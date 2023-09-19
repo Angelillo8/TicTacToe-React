@@ -1,24 +1,37 @@
 import './TicTacToe.css';
 
-const Cell = ({position, cell, setCells, player, setPlayer}) => {
+const Cell = ({ position, cell, setCells, cells, player, setPlayer, lock}) => {
 
     const handleClick = (event) => {
-        const cellPlayed = event.target.firstChild.classList.contains("circle") || 
-                           event.target.firstChild.classList.contains("cross") 
-
-    console.log('cellPlayed :>> ', cellPlayed);
-        if(!cellPlayed) {
-            if (player === "circle") {
-                event.target.firstChild.classList.add("circle")
-                setPlayer("cross")
-            }
-            else {
-                event.target.firstChild.classList.add("cross")
-                setPlayer("circle")
+        if (!lock) {
+            if (cells[position] === "") {
+                if (player === "circle") {
+                    event.target.firstChild.classList.add("circle")
+                    handleCellChange("circle")
+                    setPlayer("cross")
+                }
+                else {
+                    event.target.firstChild.classList.add("cross")
+                    handleCellChange("cross")
+                    setPlayer("circle")
+                }
             }
         }
-
     }
+
+    const handleCellChange = (playerClass) => {
+        const modifiedCells = cells.map((cell, index) => {
+            if (index === position) {
+                return playerClass
+            }
+            else {
+                return cell;
+            };
+        });
+
+        setCells(modifiedCells)
+
+    };
 
     return (
         <div className="cell" id={position} onClick={handleClick}>
