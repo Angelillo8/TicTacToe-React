@@ -29,7 +29,7 @@ const TicTacToe = () => {
         winningCombinations.forEach(oneArray => {
             let circleWins = oneArray.every(cell => cells[cell] === "circle")
             if (circleWins) {
-                setWinningMessage("Circle Wins")
+                setWinningMessage("Circle Wins!")
                 setLock(true)
                 return
             }
@@ -38,17 +38,30 @@ const TicTacToe = () => {
         winningCombinations.forEach(oneArray => {
             let crossWins = oneArray.every(cell => cells[cell] === "cross")
             if (crossWins) {
-                setWinningMessage("Cross Wins")
+                setWinningMessage("Cross Wins!")
                 setLock(true)
                 return
             }
         })
+
+        console.log('winningMessage !== null :>> ', winningMessage !== null);
+        console.log('!cells.some(cell => "" === cell) :>> ', !cells.some(cell => "" === cell));
+        console.log('!cells.some(cell => "" === cell) && winningMessage !== null :>> ', !cells.some(cell => "" === cell) && winningMessage !== null);
+
+        if (!cells.some(cell => "" === cell) && winningMessage === null) {
+            setWinningMessage("It's a draw.")
+            setLock(true)
+        }
+
     }
 
     const message = "It is now " + player + "'s turn."
 
     const reset = () => {
-        
+        setLock(false)
+        setCells(["", "", "", "", "", "", "", "", ""])
+        setWinningMessage(null)
+        setPlayer(circleOrCross[(randomChoice(circleOrCross))])
     }
 
     return (
