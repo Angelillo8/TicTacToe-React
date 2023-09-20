@@ -8,6 +8,13 @@ const TicTacToe = () => {
         return Math.floor(Math.random() * arrayToChoose.length)
     }
 
+    const [gameMode, setGameMode] = useState("twoPlayers")
+
+    const onChooseModeChange = (event) => {
+        setGameMode(event.target.value)
+    }
+    // This below is the code for the two players and it is working.
+    // Let's figure out how to make the Against CP using some of the below
     const circleOrCross = ["circle", "cross"]
     const [cells, setCells] = useState(["", "", "", "", "", "", "", "", ""])
     const [player, setPlayer] = useState(circleOrCross[(randomChoice(circleOrCross))])
@@ -20,10 +27,10 @@ const TicTacToe = () => {
 
     const checkWinner = () => {
         const winningCombinations = [
-            [0,1,2], [3,4,5],
-            [6,7,8], [0,3,6],
-            [1,4,7], [2,5,8],
-            [0,4,8], [2,4,6]
+            [0, 1, 2], [3, 4, 5],
+            [6, 7, 8], [0, 3, 6],
+            [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
         ]
 
         winningCombinations.forEach(oneArray => {
@@ -67,6 +74,28 @@ const TicTacToe = () => {
     return (
         <div className="container">
             <h1 className="title">Tic Tac Toe</h1>
+            <div>
+                <h2>Choose a mode:</h2>
+                <input
+                    type="radio"
+                    name="chooseMode"
+                    value="twoPlayers"
+                    id="twoPlayers"
+                    checked={gameMode === "twoPlayers"}
+                    onChange={onChooseModeChange}
+                />
+                <label htmlFor="regular">Two Players</label>
+
+                <input
+                    type="radio"
+                    name="chooseMode"
+                    value="againstCP"
+                    id="againstCP"
+                    checked={gameMode === "againstCP"}
+                    onChange={onChooseModeChange}
+                />
+                <label htmlFor="medium">Against CP</label>
+            </div>
             <div className="board">
                 {cells.map((cell, index) =>
                     <Cell
