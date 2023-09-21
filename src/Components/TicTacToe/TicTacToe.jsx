@@ -13,6 +13,12 @@ const TicTacToe = () => {
     const onChooseModeChange = (event) => {
         setGameMode(event.target.value)
     }
+
+    const activeGameMode = () => {
+        if (gameMode === "twoPlayers") {
+            
+        }
+    }
     // This below is the code for the two players and it is working.
     // Let's figure out how to make the Against CP using some of the below
     const circleOrCross = ["circle", "cross"]
