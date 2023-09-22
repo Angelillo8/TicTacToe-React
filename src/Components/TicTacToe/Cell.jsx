@@ -7,34 +7,22 @@ const Cell = ({ position, cell, setCells, cells, player, setPlayer, lock, gameMo
 
     const handleClick = (event) => {
         if (!lock) {
-            if (gameMode === "twoPlayers") {
-                if (cells[position] === "") {
-                    if (player === "circle") {
-                        event.target.firstChild.classList.add("circle")
-                        handleCellChange("circle")
-                        setPlayer("cross")
-                    }
-                    else {
-                        event.target.firstChild.classList.add("cross")
-                        handleCellChange("cross")
-                        setPlayer("circle")
-                    }
-                }
-            }
-            else {
-                if (cells[position] === "") {
-                    if (player === "circle") {
-                        event.target.firstChild.classList.add("circle")
-                        handleCellChange("circle")
-                        setPlayer("cross")
+            if (cells[position] === "") {
+                if (player === "circle") {
+                    event.target.firstChild.classList.add("circle")
+                    handleCellChange("circle")
+                    setPlayer("cross")
+                    if (gameMode === "againstCP") {
                         if (player !== cpPlayer) {
                             setTimeout(() => setCpTurn(++cpTurn), 1000)
                         }
                     }
-                    else {
-                        event.target.firstChild.classList.add("cross")
-                        handleCellChange("cross")
-                        setPlayer("circle")
+                }
+                else {
+                    event.target.firstChild.classList.add("cross")
+                    handleCellChange("cross")
+                    setPlayer("circle")
+                    if (gameMode === "againstCP") {
                         if (player !== cpPlayer) {
                             setTimeout(() => setCpTurn(++cpTurn), 1000)
                         }
