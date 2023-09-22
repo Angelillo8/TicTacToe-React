@@ -30,18 +30,15 @@ const TicTacToe = () => {
         checkWinner(winningCombinations)
     }, [cells])
 
+
     useEffect(() => {
         if (!lock && cpTurn > 0) {
-            console.log('RunningThisUseEffectCpTurn')
-            console.log('cpTurn en el useEffect', cpTurn)
             const cpPlayedCell = cpLogic(cells)
             const elementPlayed = document.getElementById(cpPlayedCell)
             elementPlayed.click()
-            console.log('cpPlayedCell', cpPlayedCell)
-            console.log('elementPlayed', elementPlayed)
-            console.log('lock', lock)
         }
     }, [cpTurn])
+
 
 
     const checkWinner = (winningCombinations) => {
@@ -92,9 +89,6 @@ const TicTacToe = () => {
         setCpPlayer("circle")
         setCpTurn(0)
     }
-
-    console.log('cpTurn', cpTurn)
-    console.log('cells', cells)
 
     return (
         <div className="container">
