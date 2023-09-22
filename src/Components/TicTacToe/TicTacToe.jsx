@@ -1,40 +1,50 @@
 import { useEffect, useState } from 'react';
 import './TicTacToe.css';
 import Cell from './Cell';
+import { randomChoice, winningCombinations } from '../../Utils/constants';
+import { cpLogic } from '../../Utils/cpLogic';
 
 const TicTacToe = () => {
 
-    const randomChoice = (arrayToChoose) => {
-        return Math.floor(Math.random() * arrayToChoose.length)
-    }
 
     const [gameMode, setGameMode] = useState("twoPlayers")
 
     const onChooseModeChange = (event) => {
         setGameMode(event.target.value)
+        reset()
     }
     // This below is the code for the two players and it is working.
     // Let's figure out how to make the Against CP using some of the below
     const circleOrCross = ["circle", "cross"]
+    const cpOrPlayer = ["cp", "player"]
     const [cells, setCells] = useState(["", "", "", "", "", "", "", "", ""])
     const [player, setPlayer] = useState("cross")
     // const [player, setPlayer] = useState(circleOrCross[(randomChoice(circleOrCross))])
     const [cpPlayer, setCpPlayer] = useState("circle")
     // const [cpPlayer, setCpPlayer] = useState(circleOrCross[(randomChoice(circleOrCross))])
+    const [cpTurn, setCpTurn] = useState(0)
     const [lock, setLock] = useState(false)
     const [winningMessage, setWinningMessage] = useState(null)
 
     useEffect(() => {
-        checkWinner()
+        checkWinner(winningCombinations)
     }, [cells])
 
-    const checkWinner = () => {
-        const winningCombinations = [
-            [0, 1, 2], [3, 4, 5],
-            [6, 7, 8], [0, 3, 6],
-            [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-        ]
+    useEffect(() => {
+        if (!lock && cpTurn > 0) {
+            console.log('RunningThisUseEffectCpTurn')
+            console.log('cpTurn en el useEffect', cpTurn)
+            const cpPlayedCell = cpLogic(cells)
+            const elementPlayed = document.getElementById(cpPlayedCell)
+            elementPlayed.click()
+            console.log('cpPlayedCell', cpPlayedCell)
+            console.log('elementPlayed', elementPlayed)
+            console.log('lock', lock)
+        }
+    }, [cpTurn])
+
+
+    const checkWinner = (winningCombinations) => {
 
         winningCombinations.forEach(oneArray => {
             let circleWins = oneArray.every(cell => cells[cell] === "circle")
@@ -72,14 +82,19 @@ const TicTacToe = () => {
         }
     }
 
-
     const reset = () => {
         setLock(false)
         setCells(["", "", "", "", "", "", "", "", ""])
         setWinningMessage(null)
-        setPlayer(circleOrCross[(randomChoice(circleOrCross))])
-        setCpPlayer(circleOrCross[(randomChoice(circleOrCross))])
+        // setPlayer(circleOrCross[(randomChoice(circleOrCross))])
+        setPlayer("cross")
+        // setCpPlayer(circleOrCross[(randomChoice(circleOrCross))])
+        setCpPlayer("circle")
+        setCpTurn(0)
     }
+
+    console.log('cpTurn', cpTurn)
+    console.log('cells', cells)
 
     return (
         <div className="container">
@@ -119,6 +134,8 @@ const TicTacToe = () => {
                         lock={lock}
                         gameMode={gameMode}
                         cpPlayer={cpPlayer}
+                        cpTurn={cpTurn}
+                        setCpTurn={setCpTurn}
                     />)}
             </div>
             <p>{winningMessage || message}</p>
