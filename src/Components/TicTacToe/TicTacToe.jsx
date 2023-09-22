@@ -13,17 +13,14 @@ const TicTacToe = () => {
     const onChooseModeChange = (event) => {
         setGameMode(event.target.value)
     }
-
-    const activeGameMode = () => {
-        if (gameMode === "twoPlayers") {
-            
-        }
-    }
     // This below is the code for the two players and it is working.
     // Let's figure out how to make the Against CP using some of the below
     const circleOrCross = ["circle", "cross"]
     const [cells, setCells] = useState(["", "", "", "", "", "", "", "", ""])
-    const [player, setPlayer] = useState(circleOrCross[(randomChoice(circleOrCross))])
+    const [player, setPlayer] = useState("cross")
+    // const [player, setPlayer] = useState(circleOrCross[(randomChoice(circleOrCross))])
+    const [cpPlayer, setCpPlayer] = useState("circle")
+    // const [cpPlayer, setCpPlayer] = useState(circleOrCross[(randomChoice(circleOrCross))])
     const [lock, setLock] = useState(false)
     const [winningMessage, setWinningMessage] = useState(null)
 
@@ -57,10 +54,6 @@ const TicTacToe = () => {
             }
         })
 
-        console.log('winningMessage !== null :>> ', winningMessage !== null);
-        console.log('!cells.some(cell => "" === cell) :>> ', !cells.some(cell => "" === cell));
-        console.log('!cells.some(cell => "" === cell) && winningMessage !== null :>> ', !cells.some(cell => "" === cell) && winningMessage !== null);
-
         if (!cells.some(cell => "" === cell) && winningMessage === null) {
             setWinningMessage("It's a draw.")
             setLock(true)
@@ -68,13 +61,24 @@ const TicTacToe = () => {
 
     }
 
-    const message = "It is now " + player + "'s turn."
+    let message = "It is now " + player + "'s turn."
+
+    if (gameMode === "againstCP") {
+        if (player === cpPlayer) {
+            message = "It is now " + player + "'s (CP) turn."
+        }
+        else {
+            message = "It is now " + player + "'s (you) turn."
+        }
+    }
+
 
     const reset = () => {
         setLock(false)
         setCells(["", "", "", "", "", "", "", "", ""])
         setWinningMessage(null)
         setPlayer(circleOrCross[(randomChoice(circleOrCross))])
+        setCpPlayer(circleOrCross[(randomChoice(circleOrCross))])
     }
 
     return (
@@ -113,6 +117,8 @@ const TicTacToe = () => {
                         player={player}
                         setPlayer={setPlayer}
                         lock={lock}
+                        gameMode={gameMode}
+                        cpPlayer={cpPlayer}
                     />)}
             </div>
             <p>{winningMessage || message}</p>
