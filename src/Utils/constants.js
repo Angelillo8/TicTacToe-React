@@ -6,6 +6,7 @@ export const winningCombinations = [
     [0, 4, 8], [2, 4, 6]
 ];
 
+
 export const randomChoice = (arrayToChoose) => {
     return Math.floor(Math.random() * arrayToChoose.length)
 }
